@@ -1,4 +1,4 @@
-variable "bucket_name" {
+variable "name" {
   type        = "list"
   description = "The name of the bucket."
 }

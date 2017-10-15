@@ -9,7 +9,7 @@ Terraform module : GCP : for creation storage buckets
 ```terraform
 module "s3_bucket" {
   source      = "git::https://github.com/SweetOps/terraform-google-storage-bucket.git?ref=master"
-  bucket_name = ["my-bucket"]
+  name = ["my-bucket"]
 }
 ```
 * Example with ACL
@@ -24,7 +24,7 @@ module "s3_service_account" {
 
 module "s3_bucket" {
   source      = "git::https://github.com/SweetOps/terraform-google-storage-bucket.git?ref=master"
-  bucket_name = ["my-bucket", "my-bucket-1"]
+  name = ["my-bucket", "my-bucket-1"]
   role_entity = ["READER:user-${module.s3_service_account.email}"]
 }
 ```
@@ -35,7 +35,7 @@ module "s3_bucket" {
 | action_storage_class  | The target Storage Class of objects affected by this Lifecycle Rule. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE.                        | string |    `NEARLINE`     |    no    |
 | action_type           | The type of the action of this Lifecycle Rule. Supported values include: Delete and SetStorageClass.                                                                | string | `SetStorageClass` |    no    |
 | age                   | Minimum age of an object in days to satisfy this condition.                                                                                                         | string |       `60`        |    no    |
-| bucket_name           | The name of the bucket.                                                                                                                                             |  list  |         -         |   yes    |
+| name                  | The name of the bucket.                                                                                                                                             |  list  |         -         |   yes    |
 | created_before        | Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition.                                                                                 | string |   `2017-06-13`    |    no    |
 | default_acl           | Configure this ACL to be the default ACL.                                                                                                                           | string |     `private`     |    no    |
 | force_destroy         | When deleting a bucket, this boolean option will delete all contained objects.                                                                                      | string |      `false`      |    no    |
@@ -51,8 +51,8 @@ module "s3_bucket" {
 
 ## Outputs
 
-| Name             | Description                                                   |
-|:-----------------|:--------------------------------------------------------------|
-| bucket_name      | The name of bucket.                                           |
-| bucket_self_link | The URI of the created resource.                              |
-| bucket_url       | The base URL of the bucket, in the format gs://<bucket-name>. |
+| Name      | Description                                                   |
+|:----------|:--------------------------------------------------------------|
+| name      | The name of bucket.                                           |
+| self_link | The URI of the created resource.                              |
+| url       | The base URL of the bucket, in the format gs://<bucket-name>. |
