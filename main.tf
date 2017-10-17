@@ -1,7 +1,7 @@
 data "google_client_config" "default" {}
 
 resource "google_storage_bucket" "default" {
-  count         = "${length(var.bucket_name)}"
+  count         = "${length(var.name)}"
   name          = "${element(var.name, count.index)}"
   location      = "${length(var.location) > 0 ? var.location : data.google_client_config.default.region}"
   project       = "${length(var.project) > 0 ? var.project : data.google_client_config.default.project}"
