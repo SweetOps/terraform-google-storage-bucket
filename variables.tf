@@ -24,42 +24,67 @@ variable "storage_class" {
 }
 
 # lifecycle_rule condition block
-variable "age" {
-  description = "Minimum age of an object in days to satisfy this condition."
-  default     = "60"
-}
 
-variable "created_before" {
-  description = "Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition."
-  default     = "2017-06-13"
-}
-
-variable "is_live" {
-  description = "Relevant only for versioned objects. If true, this condition matches live objects, archived objects otherwise."
-  default     = "false"
-}
-
-variable "matches_storage_class" {
-  description = "Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, STANDARD, DURABLE_REDUCED_AVAILABILITY."
-  type        = "list"
-  default     = ["REGIONAL"]
-}
-
-variable "num_newer_versions" {
-  description = "Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition."
-  default     = "10"
+variable "condition" {
+  default = [
+    {
+      age                   = "60"
+      created_before        = "2017-06-13"
+      is_live               = "false"
+      matches_storage_class = ["REGIONAL"]
+      num_newer_versions    = "10"
+    },
+  ]
 }
 
 # lifecycle_rule action block
-variable "action_type" {
-  description = "The type of the action of this Lifecycle Rule. Supported values include: Delete and SetStorageClass."
-  default     = "SetStorageClass"
+
+variable "action" {
+  type = "list"
+
+  default = [
+    {
+      type          = "SetStorageClass"
+      storage_class = "NEARLINE"
+    },
+  ]
 }
 
-variable "action_storage_class" {
-  description = "The target Storage Class of objects affected by this Lifecycle Rule. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE."
-  default     = "NEARLINE"
+variable "website" {
+  type    = "list"
+  default = []
 }
+
+# variable "website" {
+#   type = "list"
+#
+#   default = [
+#     {
+#       main_page_suffix = "index.html"
+#       not_found_page   = "404.html"
+#     },
+#   ]
+# }
+
+# cors block
+
+variable "cors" {
+  type    = "list"
+  default = []
+}
+
+# variable "cors" {
+#   type = "list"
+#
+#   default = [
+#     {
+#       origin          = ["*"]
+#       method          = ["*"]
+#       response_header = []
+#       max_age_seconds = "3600"
+#     },
+#   ]
+# }
 
 # versioning block
 variable "versioning_enabled" {
