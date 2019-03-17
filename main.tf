@@ -48,7 +48,7 @@ resource "google_storage_bucket" "default" {
 }
 
 resource "google_storage_bucket_acl" "default" {
-  count       = "${length(compact(var.role_entity)) > 0 && var.enabled == "true" ? length(google_storage_bucket.default.*.name) : 0}"
+  count       = "${var.enabled == "true" ? length(google_storage_bucket.default.*.name) : 0}"
   default_acl = "${var.default_acl}"
   bucket      = "${google_storage_bucket.default.name}"
 
