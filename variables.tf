@@ -49,8 +49,8 @@ variable "context" {
   description = "Default context to use for passing state between label invocations"
 }
 
-variable "location" {
-  description = "The GCS location."
+variable "region" {
+  description = "The GCS region."
   default     = ""
 }
 
