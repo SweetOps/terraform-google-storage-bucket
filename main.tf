@@ -1,12 +1,28 @@
-data "google_client_config" "default" {}
+locals {
+  created_before = "${var.created_before != "" ? var.created_before : timestamp()}"
+}
+
+module "label" {
+  source      = "git::https://github.com/SweetOps/terraform-null-label.git?ref=tags/0.6.0"
+  enabled     = "${var.enabled}"
+  namespace   = "${var.namespace}"
+  name        = "${var.name}"
+  stage       = "${var.stage}"
+  environment = "${var.environment}"
+  delimiter   = "${var.delimiter}"
+  attributes  = "${var.attributes}"
+  context     = "${var.context}"
+  tags        = "${var.tags}"
+}
 
 resource "google_storage_bucket" "default" {
-  count         = "${length(var.name)}"
-  name          = "${element(var.name, count.index)}"
-  location      = "${length(var.location) > 0 ? var.location : data.google_client_config.default.region}"
-  project       = "${length(var.project) > 0 ? var.project : data.google_client_config.default.project}"
+  count         = "${var.enabled == "true" ? 1 : 0}"
+  name          = "${module.label.id}"
+  location      = "${var.location}"
+  project       = "${var.project}"
   storage_class = "${var.storage_class}"
   force_destroy = "${var.force_destroy}"
+  labels        = "${module.label.gcp_list_of_maps}"
 
   lifecycle_rule {
     action {
@@ -26,14 +42,18 @@ resource "google_storage_bucket" "default" {
   versioning {
     enabled = "${var.versioning_enabled}"
   }
+
+  encryption {
+    default_kms_key_name = "${var.kms_key_name}"
+  }
 }
 
 resource "google_storage_bucket_acl" "default" {
-  count       = "${length(var.role_entity) > 0 ? length(google_storage_bucket.default.*.name) : 0}"
+  count       = "${length(compact(var.role_entity)) > 0 && var.enabled == "true" ? length(google_storage_bucket.default.*.name) : 0}"
   default_acl = "${var.default_acl}"
-  bucket      = "${element(google_storage_bucket.default.*.name, count.index)}"
+  bucket      = "${google_storage_bucket.default.name}"
 
   role_entity = [
-    "${var.role_entity}",
+    "${compact(var.role_entity)}",
   ]
 }
