@@ -1,10 +1,56 @@
-variable "name" {
-  type        = "list"
-  description = "The name of the bucket."
+variable "namespace" {
+  type        = "string"
+  description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
 }
 
-variable "location" {
-  description = "The GCS location."
+variable "environment" {
+  type        = "string"
+  default     = ""
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
+}
+
+variable "stage" {
+  type        = "string"
+  description = "Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release'"
+}
+
+variable "name" {
+  type        = "string"
+  description = "Solution name, e.g. 'app' or 'jenkins'"
+}
+
+variable "enabled" {
+  type        = "string"
+  default     = "true"
+  description = "Set to false to prevent the module from creating any resources"
+}
+
+variable "delimiter" {
+  type        = "string"
+  default     = "-"
+  description = "Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`"
+}
+
+variable "attributes" {
+  type        = "list"
+  default     = []
+  description = "Additional attributes (e.g. `1`)"
+}
+
+variable "tags" {
+  type        = "map"
+  default     = {}
+  description = "Additional tags (e.g. `map('BusinessUnit','XYZ')`"
+}
+
+variable "context" {
+  type        = "map"
+  default     = {}
+  description = "Default context to use for passing state between label invocations"
+}
+
+variable "region" {
+  description = "The GCS region."
   default     = ""
 }
 
@@ -23,6 +69,11 @@ variable "storage_class" {
   default     = "REGIONAL"
 }
 
+variable "kms_key_name" {
+  description = "A Cloud KMS key that will be used to encrypt objects inserted into this bucket"
+  default     = ""
+}
+
 # lifecycle_rule condition block
 variable "age" {
   description = "Minimum age of an object in days to satisfy this condition."
@@ -31,7 +82,7 @@ variable "age" {
 
 variable "created_before" {
   description = "Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition."
-  default     = "2017-06-13"
+  default     = ""
 }
 
 variable "is_live" {
@@ -68,10 +119,9 @@ variable "versioning_enabled" {
 }
 
 # bucket ACL
-
 variable "default_acl" {
   description = "Configure this ACL to be the default ACL."
-  default     = "private"
+  default     = "projectPrivate"
 }
 
 variable "role_entity" {
