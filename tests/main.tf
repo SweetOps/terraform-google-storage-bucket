@@ -10,5 +10,5 @@ module "my_awesome_bucket_1" {
   name      = "bucket"
   stage     = "production"
   namespace = "sweetops"
-  enabled   = "false"
+  enabled   = false
 }
