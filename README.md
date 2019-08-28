@@ -10,6 +10,7 @@ module "awesome_bucket" {
   name        = "awesome"
   stage       = "production"
   namespace   = "sweetops"
+  location    = "europe-west1"
 }
 ```
 * Example with ACL
@@ -20,7 +21,6 @@ module "awesome_bucket_user" {
   name       = "awesome"
   stage      = "production"
   namespace  = "sweetops"
-  role       = "roles/storage.objectViewer"
 }
 
 
@@ -30,6 +30,7 @@ module "awesome_bucket" {
   stage       = "production"
   namespace   = "sweetops"
   role_entity = ["READER:user-${module.awesome_bucket_user.email}"]
+  location    = "europe-west1"
 }
 ```
 
@@ -56,8 +57,8 @@ module "awesome_bucket" {
 | matches_storage_class | Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, STANDARD, DURABLE_REDUCED_AVAILABILITY. |  list  |  `[ "REGIONAL" ]`   |    no    |
 | num_newer_versions    | Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition.                                                           | string |       `"10"`        |    no    |
 | project               | The project in which the resource belongs. If it is not provided, the provider project is used.                                                                     | string |        `""`         |    no    |
-| region                | The GCS region.                                                                                                                                                     | string |        `""`         |    no    |
-| role_entity           | List of role/entity pairs in the form ROLE:entity.                                                                                                                  |  list  |        `[]`         |    no    |
+| location              | The GCS region.                                                                                                                                                     | string |        `""`         |    no    |
+| role_entity           | List of role/entity pairs in the form ROLE:entity.Must be set if predefined_acl is not.                                                                             |  list  |        `[]`         |    no    |
 | storage_class         | The Storage Class of the new bucket. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE.                                                        | string |    `"REGIONAL"`     |    no    |
 | tags                  | Additional tags (e.g. `map('BusinessUnit','XYZ')`                                                                                                                   |  map   |        `{}`         |    no    |
 | versioning_enabled    | While set to true, versioning is fully enabled for this bucket.                                                                                                     | string |      `"true"`       |    no    |
