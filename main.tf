@@ -29,7 +29,7 @@ resource "google_storage_bucket" "default" {
     condition {
       age                   = var.age
       created_before        = var.created_before
-      is_live               = var.is_live
+      with_state            = var.with_state
       matches_storage_class = var.matches_storage_class
       num_newer_versions    = var.num_newer_versions
     }
