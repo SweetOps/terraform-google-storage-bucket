@@ -18,7 +18,6 @@ variable "stage" {
 
 variable "name" {
   type        = string
-  default     = ""
   description = "Solution name, e.g. 'app' or 'jenkins'"
 }
 
@@ -89,14 +88,14 @@ variable "created_before" {
   description = "Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition."
 }
 
-variable "is_live" {
-  default     = false
-  type        = bool
-  description = "Relevant only for versioned objects. If true, this condition matches live objects, archived objects otherwise."
+variable "with_state" {
+  type        = string
+  default     = "ANY"
+  description = "Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: LIVE, ARCHIVED, ANY."
 }
 
 variable "matches_storage_class" {
-  type        = "list"
+  type        = list
   default     = ["REGIONAL"]
   description = "Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, STANDARD, DURABLE_REDUCED_AVAILABILITY."
 }
@@ -135,7 +134,7 @@ variable "default_acl" {
 }
 
 variable "role_entity" {
-  type        = "list"
+  type        = list
   default     = []
   description = "List of role/entity pairs in the form ROLE:entity.Must be set if predefined_acl is not"
 }
