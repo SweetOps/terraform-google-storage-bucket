@@ -22,6 +22,7 @@ jobs:
           tf_actions_version: 0.12.13
           tf_actions_subcommand: 'init'
           tf_actions_comment: true
+          tf_actions_working_dir: './tests'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terraform Validate'
