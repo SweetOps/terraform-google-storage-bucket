@@ -10,8 +10,9 @@ builds:
       - goos: linux
         goarch: 386
 archives:
-  name_template: "dirty-hack-for-goreleaser"
-  files:
-    - README.md
+  -
+    name_template: "dirty-hack-for-goreleaser"
+    files:
+      - README.md
 release:
   name_template: "{{.Tag}}"
