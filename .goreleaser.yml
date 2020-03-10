@@ -9,7 +9,7 @@ builds:
         goarch: amd64
       - goos: linux
         goarch: 386
-archive:
+archives:
   name_template: "dirty-hack-for-goreleaser"
   files:
     - README.md
