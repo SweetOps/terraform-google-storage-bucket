@@ -1,0 +1,29 @@
+name: Generate terraform docs
+on:
+  pull_request_target:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: main docs
+      uses: Dirrk/terraform-docs@v1.0.8
+      with:
+        tf_docs_working_dir: .
+        tf_docs_output_file: README.md
+        tf_docs_output_method: inject
+        tf_docs_git_push: 'true'
+        tf_docs_args: '--sort-inputs-by-required'
+
+    - name: basic example docs
+      uses: Dirrk/terraform-docs@v1.0.8
+      with:
+        tf_docs_working_dir: ./examples/basic/
+        tf_docs_output_file: README.md
+        tf_docs_output_method: inject
+        tf_docs_git_push: 'true'
+        tf_docs_args: '--sort-inputs-by-required'
