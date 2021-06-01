@@ -37,7 +37,10 @@ resource "google_storage_bucket" "default" {
     enabled = var.versioning_enabled
   }
 
-  encryption {
-    default_kms_key_name = var.default_kms_key_name
+  dynamic "encryption" {
+    for_each = var.default_kms_key_name != null ? [1] : []
+    content {
+      default_kms_key_name = var.default_kms_key_name
+    }
   }
 }
